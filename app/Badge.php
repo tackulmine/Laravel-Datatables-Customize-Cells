@@ -10,7 +10,8 @@ use Spatie\MediaLibrary\Models\Media;
 
 class Badge extends Model implements HasMedia
 {
-    use SoftDeletes, HasMediaTrait;
+    use SoftDeletes;
+    use HasMediaTrait;
 
     public $table = 'badges';
 

@@ -16,11 +16,9 @@ class BadgesTableSeeder extends Seeder
             'Heart', 'Star', 'Certificate'
         ];
 
-        foreach($badges as $name)
-        {
+        foreach ($badges as $name) {
             $badge = Badge::create(compact('name'));
             $badge->addMediaFromUrl(public_path('images/badges/'.strtolower($name).'.png'))->toMediaCollection('icon');
         }
-
     }
 }

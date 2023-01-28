@@ -22,7 +22,7 @@ class EmployeesController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Employee::with(['badges'])->select(sprintf('%s.*', (new Employee)->table));
+            $query = Employee::with(['badges'])->select(sprintf('%s.*', (new Employee())->table));
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');

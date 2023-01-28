@@ -10,7 +10,8 @@ use Spatie\MediaLibrary\Models\Media;
 
 class Employee extends Model implements HasMedia
 {
-    use SoftDeletes, HasMediaTrait;
+    use SoftDeletes;
+    use HasMediaTrait;
 
     public $table = 'employees';
 

@@ -16,8 +16,7 @@ class EmployeesTableSeeder extends Seeder
         $faker = \Faker\Factory::create();
         $badges = Badge::all();
 
-        foreach(range(1,5) as $index)
-        {
+        foreach (range(1, 5) as $index) {
             $employee = Employee::create([
                 'name' => $faker->name,
                 'position' => $faker->sentence(3)
