@@ -22,16 +22,16 @@ class EmployeesController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Employee::with(['badges'])->select(sprintf('%s.*', (new Employee())->table));
+            $query = Employee::with(['media', 'badges.media'])->select(sprintf('%s.*', (new Employee())->table));
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');
 
             $table->editColumn('actions', function ($row) {
-                $viewGate      = 'employee_show';
-                $editGate      = 'employee_edit';
-                $deleteGate    = 'employee_delete';
+                $viewGate = 'employee_show';
+                $editGate = 'employee_edit';
+                $deleteGate = 'employee_delete';
                 $crudRoutePart = 'employees';
 
                 return view('partials.datatablesActions', compact(
@@ -150,10 +150,10 @@ class EmployeesController extends Controller
     {
         abort_if(Gate::denies('employee_create') && Gate::denies('employee_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $model         = new Employee();
-        $model->id     = $request->input('crud_id', 0);
+        $model = new Employee();
+        $model->id = $request->input('crud_id', 0);
         $model->exists = true;
-        $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media', 'public');
+        $media = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media', 'public');
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
     }

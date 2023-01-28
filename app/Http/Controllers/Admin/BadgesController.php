@@ -21,7 +21,7 @@ class BadgesController extends Controller
     {
         abort_if(Gate::denies('badge_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $badges = Badge::all();
+        $badges = Badge::with('media')->get();
 
         return view('admin.badges.index', compact('badges'));
     }
@@ -74,7 +74,7 @@ class BadgesController extends Controller
     {
         abort_if(Gate::denies('badge_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $badge->load('badgesEmployees');
+        $badge->load('badgesEmployees.media');
 
         return view('admin.badges.show', compact('badge'));
     }
@@ -99,10 +99,10 @@ class BadgesController extends Controller
     {
         abort_if(Gate::denies('badge_create') && Gate::denies('badge_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $model         = new Badge();
-        $model->id     = $request->input('crud_id', 0);
+        $model = new Badge();
+        $model->id = $request->input('crud_id', 0);
         $model->exists = true;
-        $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media', 'public');
+        $media = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media', 'public');
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
     }
